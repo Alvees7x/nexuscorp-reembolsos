@@ -81,7 +81,7 @@ def test_rascunho_e_privado(client, auth):
 def test_rn13_credenciais_nao_vazam(client, auth, Session):
     ana = auth("ana")
     assert "password" not in client.get("/users/me", headers=ana).text
-    r = client.post("/auth/register", json={"name": "X", "email": "x@x.com", "password": "Senha@1234",
+    r = client.post("/auth/register", json={"name": "Xx", "email": "x@x.com", "password": "Senha@1234",
                                             "department_id": 1})
     assert "password" not in r.text and "hash" not in r.text
     bad = client.post("/auth/register", json={"name": "Yy", "email": "y@y.com", "password": "curta",
@@ -89,7 +89,7 @@ def test_rn13_credenciais_nao_vazam(client, auth, Session):
     assert bad.status_code == 422 and "curta" not in bad.text  # a validação não ecoa a senha
     with Session() as s:
         stored = s.scalar(select(User.password_hash).where(User.email == "x@x.com"))
-    assert stored.startswith("scrypt$") and "Senha@1234" not in stored
+    assert stored is not None and stored.startswith("scrypt$") and "Senha@1234" not in stored
 
 
 def test_rn14_logout_invalida_token(client, auth):
