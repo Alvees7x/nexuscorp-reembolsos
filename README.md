@@ -7,7 +7,6 @@ API REST em **Python (FastAPI + SQLAlchemy)** com banco relacional (**SQLite** p
 ```bash
 python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-cp .env.example .env && export SECRET_KEY="$(python -c 'import secrets;print(secrets.token_urlsafe(48))')"
 python -m app.seed                  # cria departamentos e usuários de demonstração
 uvicorn app.main:app --reload       # docs interativas: http://127.0.0.1:8000/docs
 pytest -v                           # testes dos cenários 01–08 e das regras RN
